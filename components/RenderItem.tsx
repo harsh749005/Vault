@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, StyleSheet, Button, Pressable } from 'react-native';
+import { View, Text, useWindowDimensions, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import { OnboardingData } from '@/data/Data';
 import LottieView from 'lottie-react-native';
@@ -6,15 +6,16 @@ import LottieView from 'lottie-react-native';
 type Props = {
   item: OnboardingData;
   index: number;
+  total: number; // total slides count
 };
 
-const RenderItem = ({ item }: Props) => {
+const RenderItem = ({ item, index, total }: Props) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
-  const SvgImage = item.SvgImage; // Get SVG component if available
+  const SvgImage = item.SvgImage;
 
   return (
     <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
-      {/* Image / Animation Section */}
+      {/* Image / Animation */}
       <View style={styles.imageContainer}>
         {SvgImage ? (
           <SvgImage width={SCREEN_WIDTH * 0.8} height={SCREEN_WIDTH * 1.4} />
@@ -28,22 +29,25 @@ const RenderItem = ({ item }: Props) => {
         ) : null}
       </View>
 
-      {/* Text Section */}
+      {/* Text */}
       <View style={styles.textWrapper}>
-        <Text style={[styles.itemText]}>{item.text}</Text>
+        <Text style={styles.itemText}>{item.text}</Text>
         {item.description && (
           <Text style={styles.description}>{item.description}</Text>
         )}
       </View>
-      <View style={{gap:10,marginTop:60}}>
 
-      <Pressable style={{backgroundColor:"white",paddingHorizontal:120,borderRadius:10,paddingVertical:14}}>
-        <Text style={{fontWeight:700,fontSize:18}}>Login</Text>
-      </Pressable>
-      <Pressable style={{backgroundColor:"black",paddingHorizontal:110,borderRadius:10,paddingVertical:14}}>
-        <Text style={{fontWeight:700,fontSize:18,color:"white"}}>Sigin Up</Text>
-      </Pressable>
-      </View>
+      {/* Show buttons only on last slide */}
+      {index === total - 1 && (
+        <View style={{ gap: 10, marginTop: 60 }}>
+          <Pressable style={styles.loginButton}>
+            <Text style={styles.loginText}>Login</Text>
+          </Pressable>
+          <Pressable style={styles.signupButton}>
+            <Text style={styles.signupText}>Sign Up</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };
@@ -58,8 +62,7 @@ const styles = StyleSheet.create({
     marginBottom: 120,
   },
   textWrapper: {
-    marginTop:60,
-    // marginBottom: 20, // lifts text upwards
+    marginTop: 60,
     paddingHorizontal: 20,
     alignItems: 'center',
   },
@@ -68,8 +71,7 @@ const styles = StyleSheet.create({
     fontSize: 44,
     fontWeight: 'bold',
     marginBottom: 10,
-    color:"#fefefe"
-
+    color: '#fefefe',
   },
   description: {
     textAlign: 'center',
@@ -77,14 +79,40 @@ const styles = StyleSheet.create({
     color: '#555',
     lineHeight: 22,
   },
-  imageContainer:{
-    backgroundColor:"#0b0a08",
-    // width:"auto",
-    alignItems:"center",
-    height:250,
-    width:250,
-    justifyContent:"center",
-    marginTop:80,
-    borderRadius:"50%"
-  }
+  imageContainer: {
+    backgroundColor: '#0b0a08',
+    alignItems: 'center',
+    height: 250,
+    width: 250,
+    justifyContent: 'center',
+    marginTop: 80,
+    borderRadius: 125,
+  },
+loginButton: {
+  backgroundColor: '#E6E6E6', // soft light
+  borderColor: '#8a8a8aff',
+  borderWidth: 2,
+  paddingHorizontal: 120,
+  borderRadius: 10,
+  paddingVertical: 12,
+},
+loginText: {
+  color: "#1d1916", // dark text for contrast
+  fontWeight: '700',
+  fontSize: 18,
+},
+signupButton: {
+  backgroundColor: '#444', // keeps background same as page
+  borderColor: '#717171ff', // outline style
+  borderWidth: 2,
+  paddingHorizontal: 110,
+  borderRadius: 10,
+  paddingVertical: 12,
+},
+signupText: {
+  fontWeight: '700',
+  fontSize: 18,
+  color: '#E6E6E6', // matches outline
+},
+
 });
