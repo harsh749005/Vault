@@ -2,6 +2,7 @@ import { View, Text, useWindowDimensions, StyleSheet, Pressable } from 'react-na
 import React from 'react';
 import { OnboardingData } from '@/data/Data';
 import LottieView from 'lottie-react-native';
+import { Redirect, router } from 'expo-router';
 
 type Props = {
   item: OnboardingData;
@@ -12,6 +13,7 @@ type Props = {
 const RenderItem = ({ item, index, total }: Props) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const SvgImage = item.SvgImage;
+
 
   return (
     <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
@@ -40,10 +42,10 @@ const RenderItem = ({ item, index, total }: Props) => {
       {/* Show buttons only on last slide */}
       {index === total - 1 && (
         <View style={{ gap: 10, marginTop: 50 }}>
-          <Pressable style={styles.loginButton}>
+          <Pressable style={styles.loginButton} onPress={()=>router.push("/(auth)/Login")}>
             <Text style={styles.loginText}>Login</Text>
           </Pressable>
-          <Pressable style={styles.signupButton}>
+          <Pressable style={styles.signupButton} onPress={()=>router.push("/(auth)/SignUp")}>
             <Text style={styles.signupText}>Sign Up</Text>
           </Pressable>
         </View>
