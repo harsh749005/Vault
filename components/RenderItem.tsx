@@ -39,7 +39,7 @@ const RenderItem = ({ item, index, total }: Props) => {
 
       {/* Show buttons only on last slide */}
       {index === total - 1 && (
-        <View style={{ gap: 10, marginTop: 60 }}>
+        <View style={{ gap: 10, marginTop: 50 }}>
           <Pressable style={styles.loginButton}>
             <Text style={styles.loginText}>Login</Text>
           </Pressable>

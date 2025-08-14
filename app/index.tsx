@@ -1,38 +1,11 @@
-import { Animated, StyleSheet, View } from "react-native";
-import data from "@/data/Data";
-import RenderItem from "@/components/RenderItem";
-import { useRef } from "react";
-import Paginator from "@/components/Paginator";
+import OnBoadringScreen from "@/components/OnBoadringScreen";
+import { useAuth } from "@/lib/ContextAppWrite";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  const onScrollX = useRef(new Animated.Value(0)).current;
+  const {session} = useAuth();
 
-  return (
-    <View style={styles.container}>
-      <Animated.FlatList
-        data={data}
-        renderItem={({ item, index }) => (
-          <RenderItem item={item} index={index} total={data.length}  />
-        )}
-        keyExtractor={(item) => item.id.toString()}
-        horizontal
-        pagingEnabled
-        bounces={false}
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={16}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: onScrollX } } }],
-          { useNativeDriver: false }
-        )}
-      />
-      <Paginator data={data} scrollX={onScrollX} />
-    </View>
-  );
+  return session ? <OnBoadringScreen/>:<Redirect href={"/(auth)/Login"}/>
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1d1916",
-  },
-});
+
