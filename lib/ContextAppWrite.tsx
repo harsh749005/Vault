@@ -1,6 +1,7 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { account } from "./appwrite";
 import parseAppwriteError from "@/utils/ParseAppWriteError";
+import { Href, router } from "expo-router";
 
 type User = {
   name: string;
@@ -11,11 +12,13 @@ type SignUpParams = {
   name: string;
   email: string;
   password: string;
+  redirect: Href;
 };
 
 type SignInParams = {
   email: string;
   password: string;
+  redirect: Href;
 };
 
 type AuthContextType = {
@@ -59,7 +62,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  const signUp = async ({ email, password, name }: SignUpParams) => {
+  const signUp = async ({ email, password, name, redirect }: SignUpParams) => {
     try {
       setError("");
       // Create user
@@ -75,13 +78,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       // Get user
       const responseUser = await account.get();
       setUser(responseUser);
+      router.push(redirect);
     } catch (e: any) {
       setError(parseAppwriteError(e.message));
       console.log("Sign up error:", e);
     }
   };
 
-  const signIn = async ({ email, password }: SignInParams) => {
+  const signIn = async ({ email, password, redirect }: SignInParams) => {
     try {
       setError("");
       const responseSession = await account.createEmailPasswordSession(
@@ -92,6 +96,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
       const responseUser = await account.get();
       setUser(responseUser);
+      router.push(redirect);
     } catch (e: any) {
       console.log("Sign in error:", e);
       setError(parseAppwriteError(e.message));

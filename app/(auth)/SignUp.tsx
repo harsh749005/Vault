@@ -16,6 +16,8 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AnimatedButton from "@/components/MyLink";
 import { ScrollView } from "react-native";
+import { useAuth } from "@/lib/ContextAppWrite";
+import { ActivityIndicator } from "react-native";
 const SignUp = () => {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -23,93 +25,110 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { width } = Dimensions.get("window");
-  const handleLogin = () => {
-    console.log("Login pressed", email, password);
-    // your login logic here
-    router.push("/(protected)"); // example navigation
+  const { signUp, error } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const handleSignUp = () => {
+    console.log("SignUp pressed", email, password);
+    setLoading(true);
+    const redirect = "/(protected)/Home";
+    setTimeout(() => {
+      signUp({ name, email, password, redirect });
+    }, 3000);
   };
 
   return (
-    
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 40 : 0}
       >
-        <ScrollView     contentContainerStyle={{ flexGrow: 1 }}
-    keyboardShouldPersistTaps="handled">
-
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
         >
           <View
-            style={{
-              width: 100,
-              height: 100,
-              backgroundColor: "#0b0a08",
-              borderRadius: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
           >
-            <FontAwesome5 name="user" size={44} color="#fefefe" />
-          </View>
-          {/* Header */}
+            <View
+              style={{
+                width: 100,
+                height: 100,
+                backgroundColor: "#0b0a08",
+                borderRadius: 50,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <FontAwesome5 name="user" size={44} color="#fefefe" />
+            </View>
+            {/* Header */}
 
-          <View style={[styles.header, { marginBottom: 20 }]}>
-            <Text style={styles.title}>SignUp to vault</Text>
-            {/* <Text style={styles.subtitle}>Please log in to continue</Text> */}
-          </View>
+            <View style={[styles.header, { marginBottom: 20 }]}>
+              <Text style={styles.title}>SignUp to vault</Text>
+              {/* <Text style={styles.subtitle}>Please log in to continue</Text> */}
+            </View>
 
-          {/* Inputs */}
-          <View style={styles.form}>
-            <TextInput
-              placeholder="Name"
-              placeholderTextColor="#8a8a8aff"
-              style={[styles.input, { width: width - 48 }]}
-              value={name}
-              onChangeText={setName}
-              keyboardType="default"
-            />
-            <TextInput
-              placeholder="Email"
-              placeholderTextColor="#8a8a8aff"
-              style={[styles.input, { width: width - 48 }]}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-            />
-            <View style={styles.passwordWrapper}>
+            {/* Inputs */}
+            <View style={styles.form}>
               <TextInput
-                placeholder="Password"
+                placeholder="Name"
                 placeholderTextColor="#8a8a8aff"
-                style={styles.passwordInput}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
+                style={[styles.input, { width: width - 48 }]}
+                value={name}
+                onChangeText={setName}
+                keyboardType="default"
               />
-              <Ionicons
-                name={showPassword ? "eye-off" : "eye"}
-                onPress={() => setShowPassword(!showPassword)}
-                size={24}
-                color="#fefefe"
+              <TextInput
+                placeholder="Email"
+                placeholderTextColor="#8a8a8aff"
+                style={[styles.input, { width: width - 48 }]}
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
               />
-            </View>
-            {/* <Ionicons name="eye" size={24} color="#fefefe" /> */}
+              <View style={styles.passwordWrapper}>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="#8a8a8aff"
+                  style={styles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={!showPassword}
+                />
+                <Ionicons
+                  name={showPassword ? "eye" : "eye-off"}
+                  onPress={() => setShowPassword(!showPassword)}
+                  size={24}
+                  color="#fefefe"
+                />
+              </View>
+              <Text style={{ fontWeight: "600", color: Colors.textPrimary }}>
+                {error}
+              </Text>
+              {/* <Ionicons name="eye" size={24} color="#fefefe" /> */}
 
-        {/*  Button */}
-            <View style={[styles.bottomButtonContainer]}>
-              <Pressable style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>SignUp</Text>
-              </Pressable>
+              {/*  Button */}
+              <View style={[styles.bottomButtonContainer]}>
+                <Pressable style={styles.loginButton} onPress={handleSignUp}>
+                  {loading && error.length === 0 ? (
+                    <ActivityIndicator
+                      size="small"
+                      color={Colors.inputBorder}
+                    />
+                  ) : (
+                    <Text style={styles.loginButtonText}>SignUp</Text>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
 
-        <AnimatedButton  buttonName="already have an account ?" routerHandle="/(auth)/Login"/>
+          <AnimatedButton
+            buttonName="already have an account ?"
+            routerHandle="/(auth)/Login"
+          />
         </ScrollView>
-      
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -158,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 2,
-    borderColor:Colors.inputBorder,
+    borderColor: Colors.inputBorder,
     borderRadius: 8,
     paddingHorizontal: 12,
     backgroundColor: Colors.textInputBG,
@@ -170,7 +189,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   bottomButtonContainer: {
-    marginTop:10
+    marginTop: 10,
   },
   loginButton: {
     backgroundColor: "#E6E6E6",

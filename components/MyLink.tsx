@@ -23,9 +23,7 @@ export default function AnimatedButton({ buttonName, routerHandle }: BtnProps) {
         useNativeDriver: true,
       }),
     ]).start(() => {
-      
-        router.push(routerHandle);
-      
+      router.push(routerHandle);
     });
   };
 
@@ -38,7 +36,7 @@ export default function AnimatedButton({ buttonName, routerHandle }: BtnProps) {
             fontWeight: "600",
             textAlign: "center",
             marginBottom: 30,
-            marginTop:12
+            marginTop: 12,
           }}
         >
           {buttonName}

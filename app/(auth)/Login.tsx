@@ -9,24 +9,30 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { Redirect, useRouter } from "expo-router";
 import { Colors } from "@/utils/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AnimatedButton from "@/components/MyLink";
+import { useAuth } from "@/lib/ContextAppWrite";
 export default function Login() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { width } = Dimensions.get("window");
+  const { signIn, error, signOut, session } = useAuth();
+  const [loading, setLoading] = useState(false);
   const handleLogin = () => {
     console.log("Login pressed", email, password);
-    // your login logic here
-    router.push("/(protected)"); // example navigation
+    setLoading(true);
+    const redirect = "/(protected)/Home";
+    setTimeout(() => {
+      signIn({ email, password, redirect });
+    }, 3000);
   };
-
+  if (session) return <Redirect href="/(protected)/Home" />;
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
@@ -84,17 +90,24 @@ export default function Login() {
             </View>
             {/* <Ionicons name="eye" size={24} color="#fefefe" /> */}
 
-        {/*  Button */}
+            {/*  Button */}
 
             <View style={[styles.bottomButtonContainer]}>
               <Pressable style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Login</Text>
+                {loading && error.length === 0 ? (
+                  <ActivityIndicator size="small" color={Colors.inputBorder} />
+                ) : (
+                  <Text style={styles.loginButtonText}>Login</Text>
+                )}
               </Pressable>
             </View>
           </View>
         </View>
 
-        <AnimatedButton buttonName="create new account ?" routerHandle="/(auth)/SignUp"/>
+        <AnimatedButton
+          buttonName="create new account."
+          routerHandle="/(auth)/SignUp"
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -133,7 +146,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.inputBorder,
     borderRadius: 8,
-
     paddingVertical: 12,
     paddingHorizontal: 16,
     fontSize: 16,
@@ -144,7 +156,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 2,
-    borderColor: "#8a8a8aff",
+    borderColor: Colors.inputBorder,
     borderRadius: 8,
     paddingHorizontal: 12,
     backgroundColor: Colors.textInputBG,
@@ -156,7 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   bottomButtonContainer: {
-    marginTop:10
+    marginTop: 10,
   },
   loginButton: {
     backgroundColor: "#E6E6E6",
