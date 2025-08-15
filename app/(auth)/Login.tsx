@@ -11,7 +11,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from "react-native";
-import { Redirect, useRouter } from "expo-router";
+import { Redirect } from "expo-router";
 import { Colors } from "@/utils/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -22,7 +22,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { width } = Dimensions.get("window");
-  const { signIn, error, signOut, session } = useAuth();
+  const { signIn, error, session } = useAuth();
   const [loading, setLoading] = useState(false);
   const handleLogin = () => {
     console.log("Login pressed", email, password);

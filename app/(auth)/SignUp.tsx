@@ -9,17 +9,15 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
-import { useRouter } from "expo-router";
 import { Colors } from "@/utils/Colors";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AnimatedButton from "@/components/MyLink";
-import { ScrollView } from "react-native";
 import { useAuth } from "@/lib/ContextAppWrite";
-import { ActivityIndicator } from "react-native";
 const SignUp = () => {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

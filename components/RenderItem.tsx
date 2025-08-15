@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { OnboardingData } from "@/data/Data";
 import LottieView from "lottie-react-native";
-import { Redirect, router } from "expo-router";
+import { router } from "expo-router";
 
 type Props = {
   item: OnboardingData;
