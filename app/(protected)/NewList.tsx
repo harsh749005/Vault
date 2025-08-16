@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 import { Colors } from "@/utils/Colors";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const NewList = () => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
@@ -21,20 +23,23 @@ const NewList = () => {
             flex: 1,
             backgroundColor: Colors.mainBg,
             // justifyContent: "center",
-            paddingTop: 50,
+            paddingTop: 20,
             paddingLeft: 20,
             alignItems: "flex-start", // 👈 centers text horizontally
             width: SCREEN_WIDTH,
             height: SCREEN_HEIGHT, // 👈 force full screen height
           }}
         >
-          <View>
+          <View style={styles.itemContainer}>
+            <MaterialIcons name="lock" size={24} color={Colors.tabIconColor} />
             <Text style={styles.text}>Password</Text>
           </View>
-          <View>
+          <View style={styles.itemContainer}>
+            <MaterialCommunityIcons name="note-text" size={24} color={Colors.tabIconColor} />
             <Text style={styles.text}>Secure note</Text>
           </View>
-          <View>
+          <View style={styles.itemContainer}>
+            <MaterialIcons name="contacts" size={24} color={Colors.tabIconColor} />
             <Text style={styles.text}>Contact info</Text>
           </View>
         </View>
@@ -56,5 +61,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 8,
+    fontSize:16
   },
+  itemContainer:{
+    flexDirection:"row",
+    alignItems:"center"
+  }
 });
