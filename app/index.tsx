@@ -1,5 +1,12 @@
 import OnBoadringScreen from "@/components/OnBoadringScreen";
+import { useAuth } from "@/lib/ContextAppWrite";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  return <OnBoadringScreen />;
+ const { session } = useAuth();
+  return session ? (
+    <Redirect href="/(protected)/Home" />
+  ) : (
+    <OnBoadringScreen/>
+  );
 }
