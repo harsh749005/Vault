@@ -8,8 +8,11 @@ import {
 } from "react-native";
 import React from "react";
 import { Colors } from "@/utils/Colors";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const NewList = () => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
@@ -35,12 +38,69 @@ const NewList = () => {
             <Text style={styles.text}>Password</Text>
           </View>
           <View style={styles.itemContainer}>
-            <MaterialCommunityIcons name="note-text" size={24} color={Colors.tabIconColor} />
+            <MaterialCommunityIcons
+              name="note-text"
+              size={24}
+              color={Colors.tabIconColor}
+            />
             <Text style={styles.text}>Secure note</Text>
           </View>
           <View style={styles.itemContainer}>
-            <MaterialIcons name="contacts" size={24} color={Colors.tabIconColor} />
+            <MaterialIcons
+              name="contacts"
+              size={24}
+              color={Colors.tabIconColor}
+            />
             <Text style={styles.text}>Contact info</Text>
+          </View>
+          <View
+            style={{
+              width: SCREEN_WIDTH * 0.9,
+              height: 1,
+              backgroundColor: Colors.inputBorder,
+            }}
+          ></View>
+          <View style={styles.itemContainer}>
+            <FontAwesome
+              name="credit-card-alt"
+              size={20}
+              color={Colors.tabIconColor}
+            />
+            <Text style={styles.text}>Payment Card</Text>
+          </View>
+          <View style={styles.itemContainer}>
+            <FontAwesome name="bank" size={20} color={Colors.tabIconColor} />
+            <Text style={styles.text}>Bank account</Text>
+          </View>
+          <View
+            style={{
+              width: SCREEN_WIDTH * 0.9,
+              height: 1,
+              backgroundColor: Colors.inputBorder,
+            }}
+          ></View>
+          <View style={styles.itemContainer}>
+            <FontAwesome6 name="car" size={20} color={Colors.tabIconColor} />
+            <Text style={styles.text}>{`Driver's licence`}</Text>
+          </View>
+          <View style={styles.itemContainer}>
+            <FontAwesome6
+              name="passport"
+              size={20}
+              color={Colors.tabIconColor}
+            />
+            <Text style={styles.text}>Passport</Text>
+          </View>
+          <View
+            style={{
+              width: SCREEN_WIDTH * 0.9,
+              height: 1,
+              backgroundColor: Colors.inputBorder,
+            }}
+          ></View>
+          <View style={styles.itemContainer}>
+            <Ionicons name="mail" size={20} color={Colors.tabIconColor} />
+            <Text style={styles.text}>Email account</Text>
           </View>
         </View>
       </ScrollView>
@@ -61,10 +121,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 5,
     borderRadius: 8,
-    fontSize:16
+    fontSize: 16,
   },
-  itemContainer:{
-    flexDirection:"row",
-    alignItems:"center"
-  }
+  itemContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
 });
