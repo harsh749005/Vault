@@ -1,5 +1,6 @@
 import {
   Dimensions,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -13,6 +14,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 
 const NewList = () => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
@@ -33,10 +35,10 @@ const NewList = () => {
             height: SCREEN_HEIGHT, // 👈 force full screen height
           }}
         >
-          <View style={styles.itemContainer}>
+          <Pressable style={styles.itemContainer} onPress={()=>router.push('/(protected)/(sub_pages)/Password')}>
             <MaterialIcons name="lock" size={24} color={Colors.tabIconColor} />
             <Text style={styles.text}>Password</Text>
-          </View>
+          </Pressable>
           <View style={styles.itemContainer}>
             <MaterialCommunityIcons
               name="note-text"
