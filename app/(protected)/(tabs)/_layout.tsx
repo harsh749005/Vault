@@ -16,6 +16,7 @@ const Protected = () => {
     <Tabs
       screenOptions={{
         // already hiding header
+        
         tabBarStyle: {
           backgroundColor: Colors.tabBgColor, // 👈 Black tab bar
           borderTopWidth: 1, // remove line above tab bar

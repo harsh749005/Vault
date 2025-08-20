@@ -4,6 +4,7 @@ import parseAppwriteError from "@/utils/ParseAppWriteError";
 import { Href, router } from "expo-router";
 
 type User = {
+  $id: string; 
   name: string;
   email: string;
 };

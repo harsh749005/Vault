@@ -17,6 +17,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AnimatedButton from "@/components/MyLink";
 import { useAuth } from "@/lib/ContextAppWrite";
+import { MotiView } from "moti";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +44,11 @@ export default function Login() {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <View
+          <MotiView
+            from={{ scale: 0.3, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "timing", duration: 600 }}
+            // style={styles.imageContainer}
             style={{
               width: 100,
               height: 100,
@@ -54,7 +59,7 @@ export default function Login() {
             }}
           >
             <FontAwesome5 name="user" size={44} color="#fefefe" />
-          </View>
+          </MotiView>
           {/* Header */}
 
           <View style={[styles.header, { marginBottom: 20 }]}>
