@@ -31,6 +31,11 @@ const Password = () => {
     if (!user) {
       throw new Error("User not logged in");
     }
+    const passwordLength = password.length;
+    if (passwordLength < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
     try {
       setLoading(true);
       await databases.createDocument(
@@ -54,10 +59,10 @@ const Password = () => {
       }, 3000);
 
       // console.log("Saved successfully:", res);
-    } catch (error:any) {
-      setError(parseAppwriteError(error.message))
+    } catch (error: any) {
+      setError(parseAppwriteError(error.message));
       console.error("Appwrite error:", error);
-    } 
+    }
   };
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -258,6 +263,9 @@ const Password = () => {
                   onBlur={() => setFocusedField(null)}
                 />
               </View>
+              <Text style={{ margin: 8, fontWeight: "600", color: Colors.textPrimary }}>
+                {error}
+              </Text>
             </View>
           </View>
         </View>
