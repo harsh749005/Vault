@@ -4,18 +4,18 @@ import {
   Text,
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   Dimensions,
   TextInput,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
-import { MotiView } from "moti";  // 👈 import moti
-import Animated from 'react-native-reanimated';
 import { Colors } from "@/utils/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { DATABASE_ID, databases, PASSWORD_COLLECTION_ID } from "@/lib/appwrite";
 import { ID, Permission, Role } from "react-native-appwrite";
 import { useAuth } from "@/lib/ContextAppWrite";
+import { router } from "expo-router";
+import parseAppwriteError from "@/utils/ParseAppWriteError";
 const Password = () => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
     Dimensions.get("screen");
@@ -24,34 +24,41 @@ const Password = () => {
   const [url, setUrl] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const {user} = useAuth();
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useAuth();
   const handleSubmit = async () => {
-    console.log(compName);
-    console.log(url);
-    console.log(username);
-    console.log(password);
-    console.log("User ID:", user?.$id);
     if (!user) {
-  throw new Error("User not logged in");
-}
-try {
-  const res = await databases.createDocument(
-    DATABASE_ID,
-    PASSWORD_COLLECTION_ID,
-    ID.unique(),
-    { user_id:user?.$id, compName, url, username, password },
-      [
-    Permission.read(Role.user(user?.$id)),
-    Permission.update(Role.user(user?.$id)),
-    Permission.delete(Role.user(user?.$id))
-  ]
-  );
-  console.log("Saved successfully:", res);
-} catch (error) {
-  console.error("Appwrite error:", error);
-}
+      throw new Error("User not logged in");
+    }
+    try {
+      setLoading(true);
+      await databases.createDocument(
+        DATABASE_ID,
+        PASSWORD_COLLECTION_ID,
+        ID.unique(),
+        { user_id: user?.$id, compName, url, username, password },
+        [
+          Permission.read(Role.user(user?.$id)),
+          Permission.update(Role.user(user?.$id)),
+          Permission.delete(Role.user(user?.$id)),
+        ]
+      );
+      setTimeout(() => {
+        setCompName("");
+        setUrl("");
+        setUsername("");
+        setPassword("");
+        setLoading(false);
+        router.back();
+      }, 3000);
 
-  }
+      // console.log("Saved successfully:", res);
+    } catch (error:any) {
+      setError(parseAppwriteError(error.message))
+      console.error("Appwrite error:", error);
+    } 
+  };
   return (
     <SafeAreaView style={styles.safeArea}>
       {/* <ScrollView style={{ height: 100 }}> */}
@@ -259,7 +266,11 @@ try {
           style={[styles.bottomButtonContainer, { width: SCREEN_WIDTH * 0.95 }]}
         >
           <Pressable style={styles.loginButton} onPress={handleSubmit}>
-            <Text style={styles.loginButtonText}>Save</Text>
+            {loading && error.length === 0 ? (
+              <ActivityIndicator size="small" color={Colors.inputBorder} />
+            ) : (
+              <Text style={styles.loginButtonText}>Save</Text>
+            )}
           </Pressable>
         </View>
       </View>

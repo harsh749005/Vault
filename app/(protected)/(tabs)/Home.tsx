@@ -1,5 +1,4 @@
 import {
-  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -7,17 +6,12 @@ import {
 } from "react-native";
 import React from "react";
 import { Colors } from "@/utils/Colors";
-import { useAuth } from "@/lib/ContextAppWrite";
 
 const Home = () => {
-  const { signOut } = useAuth();
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Text style={{ color: "white" }}>Home</Text>
-        <Pressable onPress={signOut}>
-          <Text style={{ color: "white" }}>SignOut</Text>
-        </Pressable>
       </View>
     </SafeAreaView>
   );
